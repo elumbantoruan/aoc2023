@@ -11,6 +11,8 @@ import (
 	"unicode"
 )
 
+// https://adventofcode.com/2023/day/1
+
 func main() {
 	num, err := produceNumber("input01.txt")
 	if err != nil {
@@ -33,25 +35,25 @@ func produceNumber(inputFile string) (int, error) {
 	var total = 0
 	scanner := bufio.NewScanner(bytes.NewReader(payload))
 	for scanner.Scan() {
-		text := scanner.Text()
+		line := scanner.Text()
 		left := 0
-		right := len(text) - 1
+		right := len(line) - 1
 
 		nl := byte(' ')
 		nr := byte(' ')
 
 		for left <= right {
 			if nl == ' ' {
-				if unicode.IsNumber(rune(text[left])) {
-					nl = text[left]
+				if unicode.IsNumber(rune(line[left])) {
+					nl = line[left]
 				} else {
 					left++
 				}
 			}
 
 			if nr == ' ' {
-				if unicode.IsNumber(rune(text[right])) {
-					nr = text[right]
+				if unicode.IsNumber(rune(line[right])) {
+					nr = line[right]
 				} else {
 					right--
 				}
@@ -77,11 +79,11 @@ func produceNumber2(inputFile string) (int, error) {
 	var total int
 	scanner := bufio.NewScanner(bytes.NewReader(payload))
 	for scanner.Scan() {
-		text := scanner.Text()
+		line := scanner.Text()
 
 		// left & right index
 		left := 0
-		right := len(text) - 1
+		right := len(line) - 1
 		// left & right segment index
 		ls := left
 		rs := right
@@ -91,10 +93,10 @@ func produceNumber2(inputFile string) (int, error) {
 
 		for left <= right {
 			if nl == ' ' {
-				if unicode.IsNumber(rune(text[left])) {
-					nl = text[left]
+				if unicode.IsNumber(rune(line[left])) {
+					nl = line[left]
 				} else {
-					leftSegment := text[ls : left+1]
+					leftSegment := line[ls : left+1]
 					if b, ok := findNumber(leftSegment); ok {
 						nl = b
 					} else {
@@ -104,10 +106,10 @@ func produceNumber2(inputFile string) (int, error) {
 			}
 
 			if nr == ' ' {
-				if unicode.IsNumber(rune(text[right])) {
-					nr = text[right]
+				if unicode.IsNumber(rune(line[right])) {
+					nr = line[right]
 				} else {
-					rightSegment := text[right : rs+1]
+					rightSegment := line[right : rs+1]
 					if b, ok := findNumber(rightSegment); ok {
 						nr = b
 					} else {
